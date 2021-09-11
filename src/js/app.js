@@ -15,13 +15,13 @@ form.addEventListener('submit', (event) => {
 
   xhr.send(formData);
 
-  xhr.onloadend = function() {
+  xhr.onloadend = () => {
     if (String(xhr.status).startsWith('2')) {
-      console.log("Успех");
+      console.log('Успех');
     } else {
       let content = 'Сервер не принял запрос. ';
       content += `Ошибка ${xhr.status}: ${xhr.statusText}.`;
       console.error(content);
     }
   };
-})
+});
