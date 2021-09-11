@@ -1,19 +1,27 @@
-import List from './List';
-import DnD from './DnD';
+const form = document.querySelector('form');
 
-const containers = document.querySelectorAll('.list-container');
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
 
-containers.forEach((container) => {
-  const list = new List(container);
-  list.bindToDOM();
-});
+  const formData = new FormData(event.currentTarget);
 
-const board = document.querySelector('.board');
-const hoverElements = document.querySelectorAll('.hover');
-const cardsVerticalDistance = 8;
-const dragAndDrop = new DnD(board, hoverElements, cardsVerticalDistance);
+  const xhr = new XMLHttpRequest();
 
-dragAndDrop.handleMousedown();
-dragAndDrop.handleMousemove();
-dragAndDrop.handleMouseleave();
-dragAndDrop.handleMouseup();
+  xhr.withCredentials = true;
+
+  const url = 'https://help-desk-backend-2021.herokuapp.com/?method=createTicket';
+
+  xhr.open('POST', url);
+
+  xhr.send(formData);
+
+  xhr.onloadend = function() {
+    if (String(xhr.status).startsWith('2')) {
+      console.log("Успех");
+    } else {
+      let content = 'Сервер не принял запрос. ';
+      content += `Ошибка ${xhr.status}: ${xhr.statusText}.`;
+      console.error(content);
+    }
+  };
+})
