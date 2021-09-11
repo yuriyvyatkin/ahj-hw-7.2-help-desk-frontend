@@ -7,7 +7,7 @@ form.addEventListener('submit', (event) => {
 
   const xhr = new XMLHttpRequest();
 
-  xhr.withCredentials = true;
+  // xhr.withCredentials = true;
 
   const url = 'https://help-desk-backend-2021.herokuapp.com/?method=createTicket';
 
