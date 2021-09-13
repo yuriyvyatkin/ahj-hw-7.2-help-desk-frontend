@@ -1,27 +1,52 @@
-const form = document.querySelector('form');
+import Negotiator from './Negotiator';
+import Modal from './Modal';
+import TicketsList from './TicketsList';
+import AddBtn from './AddBtn';
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
+const modalEl = document.querySelector('.modal');
+const modalFormEl = modalEl.querySelector('.modal__form');
+const modalHeaderEl = modalEl.querySelector('.modal__header');
+const modalFormControlsEl = modalEl.querySelector('.form__controls');
+const modalFormDescriptionEl = modalEl.querySelector('.form__description');
+const cancelBtnEl = modalEl.querySelector('.modal__button-cancel');
+const ticketsListEl = document.querySelector('.tickets__list');
 
-  const formData = new FormData(event.currentTarget);
+const addBtnEl = document.querySelector('.add-button');
 
-  const xhr = new XMLHttpRequest();
+const addBtn = new AddBtn(
+  addBtnEl,
+  modalEl,
+  modalHeaderEl,
+  modalFormControlsEl,
+);
 
-  // xhr.withCredentials = true;
+addBtn.assignHandler();
 
-  const url = 'https://help-desk-backend-2021.herokuapp.com/?method=createTicket';
+const negotiator = new Negotiator('https://help-desk-backend-2021.herokuapp.com/');
 
-  xhr.open('POST', url);
+const modal = new Modal(
+  modalEl,
+  modalFormEl,
+  modalHeaderEl,
+  modalFormControlsEl,
+  modalFormDescriptionEl,
+  cancelBtnEl,
+  ticketsListEl,
+  negotiator,
+);
 
-  xhr.send(formData);
+modal.assignCommonHandler();
+modal.assignCancelBtnHandler();
 
-  xhr.onloadend = () => {
-    if (String(xhr.status).startsWith('2')) {
-      console.log('Успех');
-    } else {
-      let content = 'Сервер не принял запрос. ';
-      content += `Ошибка ${xhr.status}: ${xhr.statusText}.`;
-      console.error(content);
-    }
-  };
-});
+const ticketsList = new TicketsList(
+  ticketsListEl,
+  modalEl,
+  modalFormEl,
+  modalHeaderEl,
+  modalFormControlsEl,
+  modalFormDescriptionEl,
+  negotiator,
+);
+
+ticketsList.assignHandler();
+ticketsList.downloadTickets();
