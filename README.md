@@ -2,6 +2,8 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/8u2dp4t65h15utuj?svg=true)](https://ci.appveyor.com/project/yuriyvyatkin/ahj-hw-7-2-help-desk-frontend)
 
+Ссылка на Github Pages: https://yuriyvyatkin.github.io/ahj-hw-7.2-help-desk-frontend/
+
 ## HelpDesk: Frontend
 
 #### Легенда
