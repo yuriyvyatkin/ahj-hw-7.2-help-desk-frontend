@@ -32,14 +32,17 @@ export default class Modal extends TemplateEngine {
         ticket = this.ticketsList.querySelector(`#${ticketId}`);
       }
 
+      const postParams = new URLSearchParams();
+      Array.from(event.currentTarget.elements)
+        .filter(({ name }) => name)
+        .forEach(({ name, value }) => postParams.append(name, value));
+      postParams.append('status', false);
+      postParams.append('method', 'createTicket');
+
       if (this.modalHeader.innerText === 'Добавить тикет') {
         this.negotiator.createRequest({
           method: 'POST',
-          url: '?method=createTicket',
-          data: {
-            form: event.currentTarget.elements,
-            status: false,
-          },
+          data: postParams,
           callback: (response) => {
             const receivedData = JSON.parse(response);
             const ticketHTML = this.constructor.getTicketHTML(receivedData);
@@ -51,12 +54,15 @@ export default class Modal extends TemplateEngine {
       } else if (this.modalHeader.innerText === 'Изменить тикет') {
         const ticketName = ticket.querySelector('.ticket__name');
         const ticketDescription = ticket.querySelector('.ticket__description');
+        const patchParams = new URLSearchParams();
+        Array.from(event.currentTarget.elements)
+          .filter(({ name }) => name)
+          .forEach(({ name, value }) => patchParams.append(name, value));
+        patchParams.append('id', ticketId);
+        patchParams.append('method', 'changeTicket');
         this.negotiator.createRequest({
-          method: 'PUT',
-          url: `?method=editTicket&id=${ticketId}`,
-          data: {
-            form: event.currentTarget.elements,
-          },
+          method: 'PATCH',
+          data: patchParams,
           callback: (response) => {
             const receivedData = JSON.parse(response);
             if (Object.prototype.hasOwnProperty.call(receivedData, 'name')) {

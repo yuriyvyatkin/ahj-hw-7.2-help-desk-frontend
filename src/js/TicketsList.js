@@ -28,12 +28,13 @@ export default class TicketsList extends TemplateEngine {
 
       if (targetClass.startsWith('ticket__control-status')) {
         target.classList.toggle('active');
+        const params = new URLSearchParams();
+        params.append('id', ticket.id);
+        params.append('status', target.classList.contains('active'));
+        params.append('method', 'changeTicket');
         this.negotiator.createRequest({
-          method: 'PUT',
-          url: `?method=editTicket&id=${ticket.id}`,
-          data: {
-            status: target.classList.contains('active'),
-          },
+          method: 'PATCH',
+          data: params,
           callback: (response) => {
             const receivedData = JSON.parse(response);
             console.log(`Статус тикета с id #${ticket.id} был изменен на ${receivedData.status}`);

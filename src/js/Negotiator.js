@@ -9,7 +9,10 @@ export default class Negotiator {
     }
 
     const { method, data, callback } = options;
-    const url = this.baseURL + options.url;
+    let url = this.baseURL;
+    if (options.url) {
+      url += options.url;
+    }
 
     const xhr = new XMLHttpRequest();
 
@@ -32,19 +35,7 @@ export default class Negotiator {
       if (data === undefined) {
         xhr.send();
       } else {
-        const params = new URLSearchParams();
-
-        if (Object.prototype.hasOwnProperty.call(data, 'form')) {
-          Array.from(data.form)
-            .filter(({ name }) => name)
-            .forEach(({ name, value }) => params.append(name, value));
-        }
-
-        if (Object.prototype.hasOwnProperty.call(data, 'status')) {
-          params.append('status', data.status);
-        }
-
-        xhr.send(params);
+        xhr.send(data);
       }
     } catch (e) {
       console.error(e);

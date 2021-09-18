@@ -4,11 +4,12 @@ export default class TemplateEngine {
       id,
       name,
       description,
+      status,
       created,
     } = data;
     return `
       <div class="ticket" id="${id}">
-        <a href="#" class="ticket__control-status"></a>
+        <a href="#" class="ticket__control-status ${status ? 'active' : ''}"></a>
         <div class="ticket__name">
           ${name}
           <p class="ticket__description">${description}</p>
